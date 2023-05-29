@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% for camera in cameras %}
+        <article class="media content-section">
+            <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ camera.title }}</a>
+                <small class="text-muted">{{ camera.update_date }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ camera.image }}</a></h2>
+            <p class="article-content">{{ camera.description }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
