@@ -4,37 +4,6 @@ from app.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from app.models import User, Camera
 from flask_login import login_user, current_user, logout_user, login_required
 
-cameras_dict = [
-    {
-        'id': 1,
-        'title': 'here goes street name 1',
-        'update_date': 'here goes the last update timestamp',
-        'description': 'here goes description',
-        'video_src': 'here goes camera image from cv2'
-    },
-    {
-        'id': 2,
-        'title': 'here goes street name 2',
-        'update_date': 'here goes the last update timestamp',
-        'description': 'here goes description',
-        'video_src': 'here goes camera image from cv2'
-    },
-    {
-        'id': 3,
-        'title': 'here goes street name 3',
-        'update_date': 'here goes the last update timestamp',
-        'description': 'here goes description',
-        'video_src': 'here goes camera image from cv2'
-    },
-    {
-        'id': 4,
-        'title': 'here goes street name 4',
-        'update_date': 'here goes the last update timestamp',
-        'description': 'here goes description',
-        'video_src': 'here goes camera image from cv2'
-    }
-]
-
 @app.route('/')
 @app.route('/home')
 def home():
@@ -107,5 +76,5 @@ def camera(camera_id):
 @app.route('/cameras')
 @login_required
 def cameras():
-    # cameras = Camera.query.all()
-    return render_template('cameras.html', title='Cameras', cameras=cameras_dict)
+    cameras_ = Camera.query.all()
+    return render_template('cameras.html', title='Cameras', cameras=cameras_)
