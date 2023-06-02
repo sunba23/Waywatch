@@ -18,6 +18,20 @@ cameras = [
         'update_date': 'here goes the last update timestamp',
         'description': 'here goes description',
         'video_src': 'here goes camera image from cv2'
+    },
+    {
+        'id': 3,
+        'title': 'here goes street name 3',
+        'update_date': 'here goes the last update timestamp',
+        'description': 'here goes description',
+        'video_src': 'here goes camera image from cv2'
+    },
+    {
+        'id': 4,
+        'title': 'here goes street name 4',
+        'update_date': 'here goes the last update timestamp',
+        'description': 'here goes description',
+        'video_src': 'here goes camera image from cv2'
     }
 ]
 
