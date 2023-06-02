@@ -4,7 +4,7 @@ from app.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from app.models import User, Camera
 from flask_login import login_user, current_user, logout_user, login_required
 
-cameras = [
+cameras_dict = [
     {
         'id': 1,
         'title': 'here goes street name 1',
@@ -81,8 +81,31 @@ def logout():
     flash(f'You are now logged out', category="info")
     return redirect(url_for('home'))
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateAccountForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash(f'Your account has been updated', category="success")
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
     return render_template('account.html', title='Account', form=form)
+
+'''
+@app.route('/cameras/<int:camera_id>')
+@login_required
+def camera(camera_id):
+    camera = Camera.query.get_or_404(camera_id)
+    return render_template('camera.html', title=camera.title, camera=camera)
+'''
+
+@app.route('/cameras')
+@login_required
+def cameras():
+    # cameras = Camera.query.all()
+    return render_template('cameras.html', title='Cameras', cameras=cameras_dict)

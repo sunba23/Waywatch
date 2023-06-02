@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+    {% for camera in cameras %}
+        <div class="col-md-6">
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <a class="mr-2" href="#">{{ camera.title }}</a>
+                        <small class="text-muted">{{ camera.update_date }}</small>
+                    </div>
+                    <h2><a class="article-title" href="#">{{ camera.video_src }}</a></h2>
+                    <p class="article-content">{{ camera.description }}</p>
+                </div>
+            </article>
+        </div>
+        {% if loop.index % 4 == 0 %}
+            </div><div class="row">
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock content %}
