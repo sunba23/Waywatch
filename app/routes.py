@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request
 from app import app, db, bcrypt
 from app.forms import RegistrationForm, LoginForm
 from app.models import User, Camera
@@ -55,8 +55,9 @@ def login():
         user= User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user=user, remember=form.remember.data)
+            next_page = request.args.get('next')
             flash(f'You are now logged in', category="success")
-            return redirect(url_for('home'))
+            return redirect(next_page) if next_page else redirect(url_for('home'))
         flash(f'Login unsuccessful. Please check email and password', category="danger")
     return render_template('login.html', title='Login', form=form)
 
