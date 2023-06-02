@@ -29,8 +29,10 @@ class BaseAdminView(ModelView):
         flash('You are not authorized to access this page. Please log in as an admin.', category='danger')
         return redirect(url_for('login'))
     
+
 class UserAdminView(BaseAdminView):
     column_list = ['username', 'email', 'is_admin']
+
 
 class MyAdminIndexView(AdminIndexView):
     @expose('/')
