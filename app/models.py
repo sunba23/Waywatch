@@ -1,5 +1,7 @@
-from app import db, login_manager
+from app import db, login_manager, app
 from flask_login import UserMixin
+import jwt
+from datetime import datetime, timedelta, timezone
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -15,6 +17,21 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.is_admin}')"
     
+    def get_reset_token(self, expired_sec=1800):
+        s = jwt.encode({"exp": datetime.now(tz=timezone.utc) + timedelta(
+            seconds=expired_sec), "user_id": self.id}, app.config['SECRET_KEY'], algorithm="HS256")
+        return s
+
+    @staticmethod
+    def verify_reset_token(token):
+        try:
+            s = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            user_id = s['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+    
+
 class Camera(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(100), unique = True, nullable = False)
