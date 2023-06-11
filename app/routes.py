@@ -1,19 +1,35 @@
+import re
+import subprocess
 from flask import render_template, url_for, flash, redirect, request
+import requests
 from app import app, db, bcrypt, mail
 from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestPasswordResetForm, ChooseNewPasswordForm
 from app.models import User, Camera
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 import os
+import cv2
+import numpy as np
+import base64
+import datetime
+
+
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
 
 @app.route('/')
 @app.route('/home')
 def home():
     return render_template('home.html', cameras=cameras)
 
+
 @app.route('/about')
 def about():
     return render_template('about.html', title='About')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -29,6 +45,7 @@ def register():
         flash(f'Your account has been created. Please log in.', category="success")
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -46,11 +63,13 @@ def login():
         flash(f'Login unsuccessful. Please check email and password', category="danger")
     return render_template('login.html', title='Login', form=form)
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     flash(f'You are now logged out', category="info")
     return redirect(url_for('home'))
+
 
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
@@ -59,13 +78,18 @@ def account():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
+        favorite_cameras = Camera.query.filter(Camera.id.in_(form.favorite_cameras.data)).all()
+        current_user.favorite_cameras = favorite_cameras
         db.session.commit()
         flash(f'Your account has been updated', category="success")
         return redirect(url_for('account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    return render_template('account.html', title='Account', form=form)
+        form.favorite_cameras.data = [camera.id for camera in current_user.favorite_cameras]
+    print("Selected Camera IDs:", form.favorite_cameras.data)
+    return render_template('account.html', title='Account', form=form, cameras=Camera.query.all())
+
 
 '''
 @app.route('/cameras/<int:camera_id>')
@@ -75,11 +99,14 @@ def camera(camera_id):
     return render_template('camera.html', title=camera.title, camera=camera)
 '''
 
+
 @app.route('/cameras')
 @login_required
 def cameras():
-    cameras_ = Camera.query.all()
-    return render_template('cameras.html', title='Cameras', cameras=cameras_)
+    user = current_user
+    fav_cameras = user.favorite_cameras
+    return render_template('cameras.html', title='Cameras', cameras=fav_cameras)
+
 
 def send_reset_email(user):
     token = user.get_reset_token()
@@ -91,6 +118,7 @@ def send_reset_email(user):
 If you did not make this password reset request, please ignore this email and no changes will be made.
 '''
     mail.send(msg)
+
 
 @app.route('/reset_password', methods=['GET', 'POST'])
 def request_reset():

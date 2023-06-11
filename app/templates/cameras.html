@@ -9,7 +9,9 @@
                         <a class="mr-2" href="#">{{ camera.title }}</a>
                         <small class="text-muted">{{ camera.update_date }}</small>
                     </div>
-                    <h2><a class="article-title" href="#">{{ camera.video_src }}</a></h2>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="{{ camera.get_embedded_video_src(camera.video_src) }}" allowfullscreen></iframe>
+                    </div>
                     <p class="article-content">{{ camera.description }}</p>
                 </div>
             </article>

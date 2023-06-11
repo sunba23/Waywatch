@@ -3,16 +3,25 @@ from flask_login import UserMixin
 import jwt
 from datetime import datetime, timedelta, timezone
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+favorites = db.Table('favorites',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('camera_id', db.Integer, db.ForeignKey('camera.id'), primary_key=True)
+)
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(20), unique = True, nullable = False)
     email = db.Column(db.String(100), unique = True, nullable = False)
     password = db.Column(db.String(60), nullable = False)
-    is_admin = db.Column(db.Boolean, nullable = False, default = False)
+    is_admin = db.Column(db.Boolean, nullable = False, default = False) 
+    favorite_cameras = db.relationship('Camera', secondary=favorites, backref=db.backref('users', lazy='dynamic'))
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.is_admin}')"
@@ -38,6 +47,13 @@ class Camera(db.Model):
     update_date = db.Column(db.DateTime, nullable = False)
     description = db.Column(db.Text, nullable = False)
     video_src = db.Column(db.String(200), nullable = False)
+    video = db.Column(db.String(200))
+    latest_frame = db.Column(db.String(300))
+
+    def get_embedded_video_src(self, video_src):
+        video_id = video_src.split('=')[-1]
+        embedded_src = f"https://www.youtube.com/embed/{video_id}"
+        return embedded_src
 
     def __repr__(self):
         return f"Camera('{self.title}', '{self.update_date}')"
