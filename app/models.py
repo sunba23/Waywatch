@@ -44,11 +44,10 @@ class User(db.Model, UserMixin):
 class Camera(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(100), unique = True, nullable = False)
-    update_date = db.Column(db.DateTime, nullable = False)
-    description = db.Column(db.Text, nullable = False)
+    description = db.Column(db.Text, nullable = True)
     video_src = db.Column(db.String(200), nullable = False)
-    video = db.Column(db.String(200))
-    latest_frame = db.Column(db.String(300))
+    latitude = db.Column(db.Float, nullable = True)
+    longitude = db.Column(db.Float, nullable = True)
 
     def get_embedded_video_src(self, video_src):
         video_id = video_src.split('=')[-1]

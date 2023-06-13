@@ -1,17 +1,13 @@
 import re
-import subprocess
 from flask import render_template, url_for, flash, redirect, request
-import requests
 from app import app, db, bcrypt, mail
 from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestPasswordResetForm, ChooseNewPasswordForm
 from app.models import User, Camera
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
+import folium
 import os
-import cv2
 import numpy as np
-import base64
-import datetime
 
 
 import logging
@@ -23,8 +19,26 @@ logger.setLevel(logging.DEBUG)
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html', cameras=cameras)
+    return render_template('home.html')
 
+@app.route('/map')
+def map():
+    if current_user.is_authenticated:
+        cameras = current_user.favorite_cameras
+        m = folium.Map(location=[39.50, -98.35], zoom_start=4) # middle of mainland US
+
+        for camera in cameras:
+            link_url = url_for('camera', camera_id=camera.id)
+            link_content = f'<a href="{link_url}" target="_blank">Camera {camera.title}</a>'
+            popup = folium.Popup(link_content, max_width=300)
+            folium.Marker([camera.latitude, camera.longitude], popup=popup).add_to(m)
+        
+        m = m._repr_html_()
+        return render_template('map.html', map=m, title='Map')
+    else:
+        next_page = request.args.get('next')
+        flash(f'You must be logged in to view this page', category="info")
+        return redirect(url_for('login', next=next_page))
 
 @app.route('/about')
 def about():
@@ -91,13 +105,11 @@ def account():
     return render_template('account.html', title='Account', form=form, cameras=Camera.query.all())
 
 
-'''
 @app.route('/cameras/<int:camera_id>')
 @login_required
 def camera(camera_id):
     camera = Camera.query.get_or_404(camera_id)
     return render_template('camera.html', title=camera.title, camera=camera)
-'''
 
 
 @app.route('/cameras')
@@ -152,3 +164,16 @@ def reset_token(token):
         flash(f'Your password has been updated. Please log in.', category="success")
         return redirect(url_for('login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
+
+
+'''
+@app.route('/travel')
+@login_required
+def travel():
+    if current_user.is_authenticated:
+        form = TravelForm()
+        return render_template('travel.html', title='Travel', form=form)
+    else:
+        flash(f'You need to be logged in to access this page', category="warning")
+        return redirect(url_for('login'))
+'''

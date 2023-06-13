@@ -70,3 +70,14 @@ class ChooseNewPasswordForm(FlaskForm):
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
     
+
+'''
+class TravelForm(FlaskForm):
+    starting_point = StringField('Origin', validators=[DataRequired()])
+    destination = StringField('Destination', validators=[DataRequired()])
+    submit = SubmitField('Travel')
+
+    def validate_starting_point_and_destination(self, starting_point, destination):
+        if starting_point.data == destination.data:
+            raise ValidationError('Origin and destination cannot be the same.')
+'''
