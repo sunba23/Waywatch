@@ -22,6 +22,7 @@ app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
 app.config['STRIPE_PUBLIC_KEY'] = os.environ.get('STRIPE_PUBLIC_KEY')
 app.config['STRIPE_SECRET_KEY'] = os.environ.get('STRIPE_SECRET_KEY')
 app.config['STRIPE_PRICE_API_ID'] = os.environ.get('STRIPE_PRICE_API_ID')
+app.config['STRIPE_ENDPOINT_SECRET'] = os.environ.get('STRIPE_ENDPOINT_SECRET')
 
 stripe.api_key = app.config['STRIPE_SECRET_KEY']
 mail = Mail(app)
