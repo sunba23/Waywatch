@@ -1,5 +1,5 @@
 import re
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort, Response
 from app import app, db, bcrypt, mail
 from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestPasswordResetForm, ChooseNewPasswordForm
 from app.models import User, Camera
@@ -8,12 +8,7 @@ from flask_mail import Message
 import folium
 import os
 import numpy as np
-
-
-import logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+import stripe
 
 
 @app.route('/')
@@ -101,7 +96,6 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.favorite_cameras.data = [camera.id for camera in current_user.favorite_cameras]
-    print("Selected Camera IDs:", form.favorite_cameras.data)
     return render_template('account.html', title='Account', form=form, cameras=Camera.query.all())
 
 
@@ -166,14 +160,55 @@ def reset_token(token):
     return render_template('reset_token.html', title='Reset Password', form=form)
 
 
-'''
-@app.route('/travel')
+stripe.api_key = app.config['STRIPE_SECRET_KEY']
+
+@app.route('/buy-premium', methods=['GET', 'POST'])
 @login_required
-def travel():
-    if current_user.is_authenticated:
-        form = TravelForm()
-        return render_template('travel.html', title='Travel', form=form)
-    else:
-        flash(f'You need to be logged in to access this page', category="warning")
-        return redirect(url_for('login'))
-'''
+def buy_premium():
+    checkout_session = stripe.checkout.Session.create(
+        payment_method_types = ['card'],
+        line_items = [{
+            'price': os.environ.get('STRIPE_PRICE_API_ID'),
+            'quantity': 1,
+            }],
+        mode = 'payment',
+        success_url = url_for('thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url = url_for('home', _external=True)
+    )
+    
+    return render_template(
+        'buy_premium.html',
+        title='Buy Premium', 
+        checkout_session_id=checkout_session['id'], 
+        checkout_public_key=app.config['STRIPE_PUBLIC_KEY'],
+    )
+
+@app.route('/thanks')
+@login_required
+def thanks():
+    return render_template('thanks.html', title='Thank You!')
+
+
+@app.route('/webhook', methods=['POST'])
+def stripe_webhook():
+
+    if request.content_length > 1024 * 1024:
+        return abort(400)
+    
+    payload = request.get_data(as_text=True)
+    sig_header = request.environ.get('HTTP_STRIPE_SIGNATURE')
+    endpoint_secret = 'whsec_c891633ed641b5c8966a60629ce2214873e2996e0ec705f278e0e30677012340'
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+    except ValueError:
+        return Response(status=400)
+    except stripe.error.SignatureVerificationError:
+        return Response(status=400)
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        print(session)
+
+    return Response(status=200)

@@ -39,7 +39,6 @@ class UpdateAccountForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(UpdateAccountForm, self).__init__(*args, **kwargs)
         self.favorite_cameras.choices = [(camera.id, camera.title) for camera in Camera.query.all()]
-        print("Camera Choices:", self.favorite_cameras.choices)
 
     def validate_username(self, username):
         if username.data != current_user.username:
@@ -69,7 +68,7 @@ class ChooseNewPasswordForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', 
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
-    
+
 
 '''
 class TravelForm(FlaskForm):
