@@ -49,6 +49,7 @@ class Camera(db.Model):
     video_src = db.Column(db.String(200), nullable = False)
     latitude = db.Column(db.Float, nullable = True)
     longitude = db.Column(db.Float, nullable = True)
+    is_premium = db.Column(db.Boolean, nullable = False, default = False)
 
     def get_embedded_video_src(self, video_src):
         video_id = video_src.split('=')[-1]

@@ -96,7 +96,13 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.favorite_cameras.data = [camera.id for camera in current_user.favorite_cameras]
-    return render_template('account.html', title='Account', form=form, cameras=Camera.query.all())
+    
+    return render_template(
+        'account.html',
+        title='Account',
+        form=form,
+        cameras=Camera.query.all() if current_user.is_premium
+                            else Camera.query.filter_by(is_premium=False).all())
 
 
 @app.route('/cameras/<int:camera_id>')
