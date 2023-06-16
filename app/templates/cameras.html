@@ -6,7 +6,7 @@
             <article class="media content-section">
                 <div class="media-body">
                     <div class="article-metadata">
-                        <a class="mr-2" href="{{ url_for('camera', camera_id=camera.id) }}">{{ camera.title }}</a>
+                        <a class="mr-2 hyperlink" href="{{ url_for('camera', camera_id=camera.id) }}">{{ camera.title }}</a>
                     </div>
                     <div class="embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item" src="{{ camera.get_embedded_video_src(camera.video_src) }}" allowfullscreen></iframe>

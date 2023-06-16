@@ -1,15 +1,11 @@
 body {
     background: #fafafa;
-    color: #333333;
+    color: rgba(255, 255, 255, 0.8);
     margin-top: 5rem;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    color: #444444;
-  }
-  
-  .bg-steel {
-    background-color: #5f788a;
+    color: rgba(255, 255, 255, 0.8)
   }
   
   .site-header .navbar-nav .nav-link {
@@ -25,20 +21,12 @@ body {
   }
   
   .content-section {
-    background: #ffffff;
+    background: #3E4C59;
     padding: 10px 20px;
-    border: 1px solid #dddddd;
+    border: 1px solid #1F2933;
     border-radius: 3px;
     margin-bottom: 20px;
-  }
-  
-  .article-title {
-    color: #444444;
-  }
-  
-  a.article-title:hover {
-    color: #428bca;
-    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8)
   }
   
   .article-content {
@@ -54,7 +42,6 @@ body {
   .article-metadata {
     padding-bottom: 1px;
     margin-bottom: 4px;
-    border-bottom: 1px solid #e3e3e3
   }
   
   .article-metadata a:hover {
@@ -68,13 +55,6 @@ body {
     vertical-align: middle;
   }
   
-  .account-img {
-    height: 125px;
-    width: 125px;
-    margin-right: 20px;
-    margin-bottom: 16px;
-  }
-  
   .account-heading {
     font-size: 2.5rem;
   }
@@ -84,3 +64,51 @@ body {
       padding-top: 0px;
     }
   }
+
+  body {
+    background-color: #323F4B;
+    color:rgba(255, 255, 255, 0.8)
+  }
+
+  .navbar {
+    background-color: #1F2933;
+  }
+
+  .navbar-brand, .navbar-nav .nav-link {
+    color: #ffffff;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  .btn {
+    background-color: #52606D;
+    border-color: #1F2933;
+    color: rgba(255, 255, 255, 0.8);
+    &:hover {
+      background-color: #616E7C;
+      color: white;
+      border-color: #1F2933;
+    }
+  }
+
+  .form-control {
+    background-color: #cbd2d9;
+    border-color: #1F2933;
+    &:focus {
+      background-color: #cbd2d9;
+      border-color: #1F2933;
+    }
+  }
+
+  .hyperlink {
+    color: #cbd2d9;
+    &:hover {
+      color: #ffffff;
+    }
+  }
+
+  .success {
+    color: lightgreen
+}

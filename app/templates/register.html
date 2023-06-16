@@ -4,7 +4,7 @@
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
+                <legend class="mb-4">Join Today</legend>
                 {% for field in [form.username, form.email, form.password, form.confirm_password] %}
                     <div class="form-group">
                         {{ field.label(class="form-control-label") }}
@@ -20,15 +20,15 @@
                         {% endif %}
                     </div>
                 {% endfor %}
-            </fieldset>
+            </fieldset> <br><br>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
         </form>
     </div>
-    <div class="border-top pt-3">
+    <div class="pt-3">
         <small class="text-muted">
-            Already Have An Account? <a class="ml-2" href="{{ url_for('login') }}">Sign In</a>
+            Already Have An Account? <a class="ml-2 hyperlink" href="{{ url_for('login') }}">Sign In</a>
         </small>
     </div>
 {% endblock content %}

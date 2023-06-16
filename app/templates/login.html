@@ -4,7 +4,6 @@
         <form method="POST" action="{{ url_for('login') }}">
             {{ form.csrf_token }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
                 {{ form.email.label(class="form-control-label") }}
                 {{ form.email(class="form-control form-control-lg", autofocus=true) }}
                 {% for error in form.email.errors %}
@@ -17,18 +16,19 @@
                 {% endfor %}
                 {{ form.remember(class="form-check-input") }}
                 {{ form.remember.label(class="form-check-label") }}
+                <br><br>
             </fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
                 <small class="text-muted ml-2">
-                    <a href="{{ url_for('request_reset')}}">Forgot Password?</a>
+                    <a href="{{ url_for('request_reset')}}" class="hyperlink">Forgot Password?</a>
                 </small>
             </div>
         </form>
     </div>
-    <div class="border-top pt-3">
+    <div class="pt-0">
         <small class="text-muted">
-            Need An Account? <a class="ml-2" href="{{ url_for('register') }}">Sign Up Now</a>
+            Need An Account? <a class="ml-2 hyperlink" href="{{ url_for('register') }}">Sign Up Now</a>
         </small>
     </div>
 {% endblock content %}

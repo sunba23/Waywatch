@@ -10,7 +10,7 @@
                     <p class="text-secondary">{{ current_user.email }}</p>
                     <a href="{{ url_for('buy_premium') }}" class="btn btn-primary btn-sm">Buy Premium</a>
                 {% endif %}
-            </div>
+            <br><br></div>
         </div>
         <form method="POST" action="">
             {{ form.hidden_tag() }}
@@ -32,7 +32,7 @@
                         {% endif %}
                     </div>
                 {% endfor %}
-            </fieldset>
+            <br><br></fieldset>
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Favorite Cameras</legend>
                 {% for camera in cameras %}
@@ -41,7 +41,7 @@
                         <label class="form-check-label">{{ camera.title }}</label>
                     </div>
                 {% endfor %}
-            </fieldset>
+            <br><br></fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
