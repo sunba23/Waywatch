@@ -2,21 +2,23 @@
 {% block content %}
     <div class="content-section">
         <div class="media">
-            <div class="media-body">
-                <h2 class="account-heading">{{ current_user.username }}</h2>
-                {% if current_user.is_premium %}
-                    <p class="text-secondary">Premium User 👑</p>
-                {% else %}
-                    <p class="text-secondary">{{ current_user.email }}</p>
-                    <a href="{{ url_for('buy_premium') }}" class="btn btn-primary btn-sm">Buy Premium</a>
-                {% endif %}
-            <br><br></div>
+            <div class="media-body border-bottom">
+                <div class="account-info">
+                    <h2 class="account-heading">{{ current_user.username }}</h2>
+                    {% if current_user.is_premium %}
+                        <p class="text-secondary premium_or_buy">Premium User 👑</p>
+                    {% else %}
+                        <a href="{{ url_for('buy_premium') }}" class="btn btn-primary btn-sm premium_or_buy">Buy Premium</a>
+                    {% endif %}
+                </div>
+                <p class="text-secondary">{{ current_user.email }}</p>
+            </div><br>
         </div>
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             {{ form.csrf_token }}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Account Info</legend>
+            <fieldset class="form-group border-bottom mb-4">
+                <legend class="mb-2">Account Info</legend>
                 {% for field in [form.username, form.email] %}
                     <div class="form-group">
                         {{ field.label(class="form-control-label") }}
@@ -32,16 +34,16 @@
                         {% endif %}
                     </div>
                 {% endfor %}
-            <br><br></fieldset>
+            <br></fieldset>
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Favorite Cameras</legend>
+                <legend class="mb-2">Favorite Cameras</legend>
                 {% for camera in cameras %}
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="favorite_cameras" value="{{ camera.id }}" {% if camera in current_user.favorite_cameras %}checked{% endif %}>
                         <label class="form-check-label">{{ camera.title }}</label>
                     </div>
                 {% endfor %}
-            <br><br></fieldset>
+            <br></fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
