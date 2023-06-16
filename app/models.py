@@ -57,4 +57,15 @@ class Camera(db.Model):
         return embedded_src
 
     def __repr__(self):
-        return f"Camera('{self.title}', '{self.update_date}')"
+        return f'Camera("{self.title}", "{self.description}", "{self.video_src}", "{self.latitude}", "{self.longitude}")'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'video_src': self.video_src,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'is_premium': self.is_premium
+        }

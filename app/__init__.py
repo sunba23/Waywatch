@@ -23,6 +23,7 @@ app.config['STRIPE_PUBLIC_KEY'] = os.environ.get('STRIPE_PUBLIC_KEY')
 app.config['STRIPE_SECRET_KEY'] = os.environ.get('STRIPE_SECRET_KEY')
 app.config['STRIPE_PRICE_API_ID'] = os.environ.get('STRIPE_PRICE_API_ID')
 app.config['STRIPE_ENDPOINT_SECRET'] = os.environ.get('STRIPE_ENDPOINT_SECRET')
+app.config['GOOGLE_MAPS_API'] = os.environ.get('GOOGLE_MAPS_API_2')
 
 stripe.api_key = app.config['STRIPE_SECRET_KEY']
 mail = Mail(app)

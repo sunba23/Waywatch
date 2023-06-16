@@ -85,7 +85,7 @@ body {
 }
 
 .form-control:focus {
-  background-color: #cbd2d9;
+  background-color: #ffffff;
   border-color: #1F2933;
 }
 
@@ -109,4 +109,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+#map {
+  background: none !important;
 }

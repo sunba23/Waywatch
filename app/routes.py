@@ -1,7 +1,7 @@
 import re
 from flask import render_template, url_for, flash, redirect, request, abort, Response
 from app import app, db, bcrypt, mail
-from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestPasswordResetForm, ChooseNewPasswordForm
+from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestPasswordResetForm, ChooseNewPasswordForm, TravelForm
 from app.models import User, Camera
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
@@ -218,3 +218,15 @@ def stripe_webhook():
         print(session)
 
     return Response(status=200)
+
+
+@app.route('/travel', methods=['GET', 'POST'])
+@login_required
+def travel():
+    if current_user.is_premium:
+        form = TravelForm()
+        maps_api_key = app.config['GOOGLE_MAPS_API']
+        return render_template('travel.html', title='Travel', form=form, maps_api_key=maps_api_key, cameras=[camera.to_dict() for camera in Camera.query.all()])
+    else:
+        flash(f'You need to be a premium user to access this page.', category="warning")
+        return redirect(url_for('home'))

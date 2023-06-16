@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api_key }}&libraries=places,geometry"></script>
+<script src="{{ url_for('static', filename='travel.js') }}"></script>
+<script>
+    window.onload = function() {
+        initMap();
+    };
+    var cameras = JSON.parse('{{ cameras | tojson | safe}}');
+</script>
+<div class="content-section">
+    <form method="POST" action="{{ url_for('travel') }}">
+        {{ form.csrf_token }}
+        <fieldset class="form-group">
+            <label class="fa-solid fa-location-dot fa-lg far"></label>
+            {{ form.starting_point(class="form-control form-control-lg", autofocus=true) }}
+            {% for error in form.starting_point.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            <i class="fa-solid fa-location-crosshairs fa-lg far"></i>
+            {{ form.destination(class="form-control form-control-lg") }}
+            {% for error in form.destination.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            <br>
+        </fieldset>
+        <div class="form-group">
+            <button onclick="calcRoute(event, cameras, 10)" class="btn btn-primary">Get Directions</button>
+        </div>
+    </form>
+    <br><div class="container-fluid mb-4">
+        <div id="map" style="height: 450px; width: 100%"></div>
+        <div id="output"></div>  
+    </div>
+    <div id="camera-container"></div>
+</div>
+
+{% endblock content %}
