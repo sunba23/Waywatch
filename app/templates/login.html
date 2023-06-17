@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-        <form method="POST" action="{{ url_for('login') }}">
+        <form method="POST" action="{{ url_for('users.login') }}">
             {{ form.csrf_token }}
             <fieldset class="form-group">
                 {{ form.email.label(class="form-control-label") }}
@@ -21,14 +21,14 @@
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
                 <small class="text-muted ml-2">
-                    <a href="{{ url_for('request_reset')}}" class="hyperlink">Forgot Password?</a>
+                    <a href="{{ url_for('users.request_reset')}}" class="hyperlink">Forgot Password?</a>
                 </small>
             </div>
         </form>
     </div>
     <div class="pt-0">
         <small class="text-muted">
-            Need An Account? <a class="ml-2 hyperlink" href="{{ url_for('register') }}">Sign Up Now</a>
+            Need An Account? <a class="ml-2 hyperlink" href="{{ url_for('users.register') }}">Sign Up Now</a>
         </small>
     </div>
 {% endblock content %}

@@ -8,7 +8,7 @@
                     {% if current_user.is_premium %}
                         <p class="text-secondary premium_or_buy">Premium User 👑</p>
                     {% else %}
-                        <a href="{{ url_for('buy_premium') }}" class="btn btn-primary btn-sm premium_or_buy">Buy Premium</a>
+                        <a href="{{ url_for('main.buy_premium') }}" class="btn btn-primary btn-sm premium_or_buy">Buy Premium</a>
                     {% endif %}
                 </div>
                 <p class="text-secondary">{{ current_user.email }}</p>

@@ -1,9 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectMultipleField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from app.models import User, Camera
 from flask_login import current_user
-
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=20)])
@@ -69,18 +68,3 @@ class ChooseNewPasswordForm(FlaskForm):
                                      validators=[DataRequired(),
                                                 EqualTo('password')])
     submit = SubmitField('Reset Password')
-
-
-class TravelForm(FlaskForm):
-    starting_point = StringField('Source', validators=[DataRequired()])
-    destination = StringField('Destination', validators=[DataRequired()])
-    myChoices = [
-        ('driving', 'Driving'),
-        ('walking', 'Walking'),
-        ('bicycling', 'Bicycling')
-        ]
-    commute_method = SelectField('Commute Method',
-                                choices=myChoices,
-                                validators=[DataRequired()]
-                                )
-    submit = SubmitField('Go')

@@ -18,26 +18,26 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                   <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="{{ url_for('home') }}">Home
+                    <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home
                         <span class="align-middle"><i class="fa-solid fa-house"></i></span></a>
-                    <a class="nav-item nav-link" href="{{ url_for('about') }}">About
+                    <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About
                         <span class="align-middle"><i class="fa-solid fa-circle-info"></i></span></a>
                   </div>
                   <div class="navbar-nav ms-auto"> <!-- Navbar Right Side -->
                     {% if current_user.is_authenticated %}
-                        <a class="nav-item nav-link" href="{{ url_for('travel') }}">Travel
+                        <a class="nav-item nav-link" href="{{ url_for('cameras.travel') }}">Travel
                             <span class="align-middle"><i class="fa-solid fa-compass"></i></span></a>
-                        <a class="nav-item nav-link" href="{{ url_for('map') }}">Map
+                        <a class="nav-item nav-link" href="{{ url_for('cameras.map') }}">Map
                             <span class="align-middle"><i class="fa-solid fa-map"></i></span></a>
-                        <a class="nav-item nav-link" href="{{ url_for('cameras') }}">Cameras
+                        <a class="nav-item nav-link" href="{{ url_for('cameras.cameras') }}">Cameras
                             <span class="align-middle"><i class="fa-solid fa-camera fa-lg"></i></span></a>
-                        <a class="nav-item nav-link" href="{{ url_for('account') }}">Account
+                        <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account
                             <span class="align-middle"><i class="nav-link-icon fa-solid fa-user"></i></span></a>
-                        <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout
+                        <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout
                             <span class="align-middle"><i class="fa-solid fa-right-from-bracket"></i></span></a>
                     {% else %}
-                        <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-                        <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
                     {% endif %}
                     </div>
                 </div>

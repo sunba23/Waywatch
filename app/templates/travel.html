@@ -9,7 +9,7 @@
     var cameras = JSON.parse('{{ cameras | tojson | safe}}');
 </script>
 <div class="content-section">
-    <form method="POST" action="{{ url_for('travel') }}">
+    <form method="POST" action="{{ url_for('cameras.travel') }}">
         {{ form.csrf_token }}
         <fieldset class="form-group">
             <label class="fa-solid fa-location-dot fa-lg far"></label>
