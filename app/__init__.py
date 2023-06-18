@@ -6,6 +6,7 @@ from flask_admin import Admin
 from flask_mail import Mail
 from app.admin import MyAdminIndexView, BaseAdminView, UserAdminView
 from app.config import Config
+from app.models import User, Camera
 
 
 mail = Mail()
@@ -17,10 +18,10 @@ login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
 
 # admin
-from app.models import User, Camera
 admin = Admin(index_view=MyAdminIndexView())
 admin.add_view(UserAdminView(User, db.session))
 admin.add_view(BaseAdminView(Camera, db.session))
+
 
 def create_app(config_class=Config):
     # app

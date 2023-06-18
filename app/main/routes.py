@@ -1,4 +1,5 @@
-from flask import Response, abort, render_template, request, Blueprint, url_for, current_app
+from flask import (Response, abort, render_template,
+                   request, Blueprint, url_for, current_app)
 from flask_login import login_required
 import os
 import stripe
@@ -21,24 +22,26 @@ def about():
 @login_required
 def buy_premium():
     stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
-    
+
     checkout_session = stripe.checkout.Session.create(
-        payment_method_types = ['card'],
-        line_items = [{
+        payment_method_types=['card'],
+        line_items=[{
             'price': os.environ.get('STRIPE_PRICE_API_ID'),
             'quantity': 1,
             }],
-        mode = 'payment',
-        success_url = url_for('main.thanks', _external=True) + '?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url = url_for('main.home', _external=True)
+        mode='payment',
+        success_url=(url_for('main.thanks', _external=True)
+                     + '?session_id={CHECKOUT_SESSION_ID}'),
+        cancel_url=url_for('main.home', _external=True)
     )
-    
+
     return render_template(
         'buy_premium.html',
-        title='Buy Premium', 
-        checkout_session_id=checkout_session['id'], 
+        title='Buy Premium',
+        checkout_session_id=checkout_session['id'],
         checkout_public_key=current_app.config['STRIPE_PUBLIC_KEY'],
     )
+
 
 @main.route('/thanks')
 @login_required
@@ -51,14 +54,16 @@ def stripe_webhook():
 
     if request.content_length > 1024 * 1024:
         return abort(400)
-    
+
     payload = request.get_data(as_text=True)
     sig_header = request.environ.get('HTTP_STRIPE_SIGNATURE')
     endpoint_secret = current_app.config['STRIPE_ENDPOINT_SECRET']
     event = None
 
     try:
-        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+        event = stripe.Webhook.construct_event(payload,
+                                               sig_header,
+                                               endpoint_secret)
     except ValueError:
         return Response(status=400)
     except stripe.error.SignatureVerificationError:
