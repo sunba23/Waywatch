@@ -99,10 +99,11 @@ function calcRoute(event, cameras){
     event.preventDefault();
     var starting_point = document.getElementById('starting_point').value;
     var destination = document.getElementById('destination').value;
+    var method = document.getElementById('commute_method').value;
     var request = {
         origin: starting_point,
         destination: destination,
-        travelMode: 'DRIVING'
+        travelMode: method
     };
     directionsService.route(request, function(result, status){
         if(status == 'OK'){
@@ -156,4 +157,17 @@ function showCamerasNearRoute(result, cameras, distanceThresholdKm) {
       });
     }
   });
+}
+
+function updateSymbol(travelMethod) {
+  var symbolElement = document.getElementById("symbol");
+  if (travelMethod === "DRIVING") {
+      symbolElement.innerHTML = '<i class="fa-solid fa-car fa-lg"></i>';
+  } else if (travelMethod === "TRANSIT") {
+      symbolElement.innerHTML = '<i class="fa-solid fa-bus fa-lg"></i>';
+  } else if (travelMethod === "WALKING") {
+      symbolElement.innerHTML = '<i class="fa-solid fa-person-walking fa-lg"></i>';
+  } else if (travelMethod === "BICYCLING") {
+      symbolElement.innerHTML = '<i class="fa-solid fa-person-biking fa-lg"></i>';
+  }
 }

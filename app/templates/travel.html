@@ -5,30 +5,43 @@
 <script>
     window.onload = function() {
         initMap();
+        updateSymbol(document.getElementById('commute_method').value);
     };
     var cameras = JSON.parse('{{ cameras | tojson | safe}}');
 </script>
 <div class="content-section">
     <form method="POST" action="{{ url_for('cameras.travel') }}">
         {{ form.csrf_token }}
-        <fieldset class="form-group">
-            <label class="fa-solid fa-location-dot fa-lg far"></label>
-            {{ form.starting_point(class="form-control form-control-lg", autofocus=true) }}
-            {% for error in form.starting_point.errors %}
-                <span class="text-danger">{{ error }}</span>
-            {% endfor %}
-            <i class="fa-solid fa-location-crosshairs fa-lg far"></i>
-            {{ form.destination(class="form-control form-control-lg") }}
-            {% for error in form.destination.errors %}
-                <span class="text-danger">{{ error }}</span>
-            {% endfor %}
+        <fieldset class="form-group"> 
+            <div class="form-row">
+                <label for="starting_point" class="fa-solid fa-location-dot fa-lg far"></label>
+                {{ form.starting_point(class="form-control form-control-lg", autofocus=true, id="starting_point") }}
+                {% for error in form.starting_point.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                <label for="destination" class="fa-solid fa-location-crosshairs fa-lg far"></label>
+                {{ form.destination(class="form-control form-control-lg", id="destination") }}
+                {% for error in form.destination.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                <label for="commute_method" id="symbol"></label>
+                <div class="commute-method-container">
+                    {{ form.commute_method(class="btn btn-secondary dropdown-toggle", onchange="updateSymbol(this.value)", id="commute_method") }}
+                </div>
+                <div class="get-directions-container">
+                    <button onclick="calcRoute(event, cameras, 10)" class="btn btn-primary" id="get-directions">Get Directions
+                        <span class="fa-solid fa-directions fa-lg far"></span>
+                    </button>
+                </div>
+            </div>
             <br>
         </fieldset>
-        <div class="form-group">
-            <button onclick="calcRoute(event, cameras, 10)" class="btn btn-primary">Get Directions</button>
-        </div>
     </form>
-    <br><div class="container-fluid mb-4">
+    <div class="container-fluid mb-4">
         <div id="map" style="height: 450px; width: 100%"></div>
         <div id="output"></div>  
     </div>

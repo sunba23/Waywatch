@@ -114,3 +114,43 @@ body {
 #map {
   background: none !important;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1vh;
+  margin-right: 1.6vw;
+  justify-content: space-between;
+}
+
+.form-row label {
+  margin-right: 12px;
+  margin-left: none;
+}
+
+.form-row .commute-method-container {
+  display: flex;
+  align-items: center;
+  margin-left: none;
+  position: fixed;
+  margin-left: 1.5vw;
+}
+
+.form-row .commute-method-container .btn {
+  margin-left: 10px;
+}
+
+.form-row .get-directions-container {
+  margin-left: auto;
+}
+
+#starting-point {
+  position: fixed;
+  margin-left: 3vw;
+}

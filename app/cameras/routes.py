@@ -12,7 +12,10 @@ cameras_bp = Blueprint('cameras', __name__)
 @login_required
 def camera(camera_id):
     camera = Camera.query.get_or_404(camera_id)
-    return render_template('camera.html', title=camera.title, camera=camera)
+    return render_template(
+        'camera.html', 
+        title=camera.title, 
+        camera=camera)
 
 
 @cameras_bp.route('/cameras')
@@ -57,12 +60,20 @@ def travel():
     if current_user.is_premium:
         form = TravelForm()
         maps_api_key = current_app.config['GOOGLE_MAPS_API']
-        return render_template('travel.html',
-                               title='Travel',
-                               form=form,
-                               maps_api_key=maps_api_key,
-                               cameras=[camera.to_dict()
-                                        for camera in Camera.query.all()])
+        if form.validate_on_submit():
+            return render_template('travel.html',
+                                title='Travel',
+                                form=form,
+                                maps_api_key=maps_api_key,
+                                cameras=[camera.to_dict()
+                                         for camera in Camera.query.all()])
+        else:
+            return render_template('travel.html',
+                                 title='Travel',
+                                 form=form,
+                                 maps_api_key=maps_api_key,
+                                 cameras=[camera.to_dict()
+                                          for camera in Camera.query.all()])
     else:
         flash('You need to be a premium user to access this page.',
               category="warning")
