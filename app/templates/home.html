@@ -1,4 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
-<div> main page </div>
+<br><h1 class="site-title"> Welcome to waywatch. 
+    <span>
+        {% if current_user.is_authenticated %}
+            <i class="fa-regular fa-eye"></i>
+        {% endif %}
+    </span>
+</h1>
 {% endblock content %}

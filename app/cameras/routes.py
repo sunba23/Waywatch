@@ -23,6 +23,10 @@ def camera(camera_id):
 def cameras():
     user = current_user
     fav_cameras = user.favorite_cameras
+    if not fav_cameras:
+        flash('You have no favorite cameras yet. '
+              'Add some in your profile!',
+              category="info")
     return render_template('cameras.html',
                            title='Cameras',
                            cameras=fav_cameras)
@@ -32,6 +36,11 @@ def cameras():
 def map():
     if current_user.is_authenticated:
         cameras = current_user.favorite_cameras
+        if not cameras:
+            flash('You have no favorite cameras yet. '
+                  'Add some in your profile!',
+                  category="info")
+            return redirect(url_for('users.account'))
         m = folium.Map(location=[39.50, -98.35], zoom_start=4)
         folium.TileLayer('cartodbdark_matter').add_to(m)
 

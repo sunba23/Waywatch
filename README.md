@@ -5,5 +5,6 @@ This project is a web application that allows users to view and interact with ca
 <li> Flask, Flask-Login, Flask-Mail, Flask-Admin </li>
 <li> database with SQLAlchemy </li>
 <li> forms with WTForms </li>
-<li> payments with Stripe </li>
+<li> payments with Stripe API </li>
+<li> google maps API </li>
 <li> HTML, CSS, Bootstrap v5 </li>
