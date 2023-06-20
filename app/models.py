@@ -34,7 +34,7 @@ class User(db.Model, UserMixin):
     is_premium = db.Column(db.Boolean, nullable=False, default=False)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.is_admin}')"
+        return f"User('{self.username}', '{self.email}', '{self.is_admin}', '{self.is_premium}')"
 
     def get_reset_token(self, expired_sec=1800):
         s = jwt.encode(

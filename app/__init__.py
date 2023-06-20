@@ -8,7 +8,6 @@ from app.admin import MyAdminIndexView, BaseAdminView, UserAdminView
 from app.config import Config
 
 
-
 mail = Mail()
 db = SQLAlchemy()
 bcrypt = Bcrypt()

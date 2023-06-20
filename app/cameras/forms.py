@@ -17,12 +17,13 @@ class TravelForm(FlaskForm):
                                  validators=[DataRequired()])
     submit = SubmitField('Go')
 
-    def validate_starting_point(self, field):
-        if field.data == self.destination.data:
-            raise ValidationError('Starting point and destination cannot be the same')
+    def validate_starting_point(self, starting_point):
+        if starting_point.data == self.destination.data:
+            raise ValidationError(
+                'Starting point and destination cannot be the same')
 
-    def validate_destination(self, field):
-        if field.data == self.starting_point.data:
-            raise ValidationError('Starting point and destination cannot be the same')
-
-        
+    def validate_destination(self, destination):
+        if destination.data == self.starting_point.data:
+            print('error was raised')
+            raise ValidationError(
+                'Starting point and destination cannot be the same')

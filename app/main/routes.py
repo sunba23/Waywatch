@@ -1,8 +1,10 @@
 from flask import (Response, abort, render_template,
                    request, Blueprint, url_for, current_app)
-from flask_login import login_required
+from flask_login import login_required, current_user
 import os
 import stripe
+from app import db
+from app.models import User
 
 main = Blueprint('main', __name__)
 
@@ -46,7 +48,16 @@ def buy_premium():
 @main.route('/thanks')
 @login_required
 def thanks():
-    return render_template('thanks.html', title='Thank You!')
+    session_id = request.args.get('session_id')
+    if session_id:
+        stripe.api_key = current_app.config['STRIPE_SECRET_KEY']
+        session = stripe.checkout.Session.retrieve(session_id)
+        if session and session.payment_status == 'paid':
+            user = User.query.get(current_user.id)
+            user.is_premium = True
+            db.session.commit()
+            return render_template('thanks.html', title='Thank You!')
+    return abort(400)
 
 
 @main.route('/webhook', methods=['POST'])
