@@ -75,7 +75,7 @@ def travel():
             form=form,
             maps_api_key=maps_api_key,
             cameras=[camera.to_dict()
-                        for camera in Camera.query.all()])
+                     for camera in Camera.query.all()])
     else:
         flash('You need to be a premium user to access this page.',
               category="warning")

@@ -1,0 +1,16 @@
+bcrypt
+email_validator
+Flask
+Flask-Admin
+Flask-Login
+Flask-SQLAlchemy
+Flask-WTF
+Flask-Mail
+folium
+jwt
+requests
+rsa
+SQLAlchemy
+stripe
+validators
+WTForms
